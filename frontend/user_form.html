@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriGenie - User Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .form-section h2 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        #result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        #result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌿 NutriGenie</h1>
+        <p class="subtitle">Your AI Nutrition & Grocery Assistant</p>
+        
+        <form id="userForm">
+            <!-- Basic Information -->
+            <div class="form-section">
+                <h2>📋 Basic Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Name <span class="required">*</span></label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Age <span class="required">*</span></label>
+                        <input type="number" id="age" min="10" max="120" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sex <span class="required">*</span></label>
+                        <select id="sex" required>
+                            <option value="">Select...</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Height (cm) <span class="required">*</span></label>
+                        <input type="number" id="height" min="100" max="250" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Weight (kg) <span class="required">*</span></label>
+                        <input type="number" id="weight" min="30" max="300" step="0.1" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Country</label>
+                        <input type="text" id="country">
+                    </div>
+                    <div class="form-group">
+                        <label>Ethnicity</label>
+                        <input type="text" id="ethnicity">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Activity Level <span class="required">*</span></label>
+                    <select id="activity_level" required>
+                        <option value="">Select...</option>
+                        <option value="sedentary">Sedentary (little or no exercise)</option>
+                        <option value="lightly_active">Lightly Active (1-3 days/week)</option>
+                        <option value="moderately_active">Moderately Active (3-5 days/week)</option>
+                        <option value="very_active">Very Active (6-7 days/week)</option>
+                        <option value="extremely_active">Extremely Active (athlete)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Goals -->
+            <div class="form-section">
+                <h2>🎯 Goals</h2>
+                <div class="form-group">
+                    <label>Primary Goal <span class="required">*</span></label>
+                    <select id="goal_type" required>
+                        <option value="">Select...</option>
+                        <option value="lose_weight">Lose Weight</option>
+                        <option value="gain_muscle">Gain Muscle</option>
+                        <option value="maintain">Maintain Weight</option>
+                        <option value="bulk">Bulk (gain weight)</option>
+                        <option value="cut">Cut (lose fat, keep muscle)</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Target Weight (kg)</label>
+                        <input type="number" id="target_weight" min="30" max="300" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Timeline (weeks)</label>
+                        <input type="number" id="target_timeline_weeks" min="1" max="104">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Restrictions -->
+            <div class="form-section">
+                <h2>⚠️ Allergies & Restrictions</h2>
+                <div class="form-group">
+                    <label>Allergies</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="allergies" value="peanuts"> Peanuts
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="allergies" value="tree_nuts"> Tree Nuts
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="allergies" value="dairy"> Dairy
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="allergies" value="eggs"> Eggs
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="allergies" value="soy"> Soy
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="allergies" value="shellfish"> Shellfish
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="allergies" value="gluten"> Gluten
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Medical Conditions</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="medical" value="diabetes"> Diabetes
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="medical" value="hypertension"> Hypertension
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="medical" value="heart_disease"> Heart Disease
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="medical" value="kidney_disease"> Kidney Disease
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Preferences -->
+            <div class="form-section">
+                <h2>🍽️ Dietary Preferences</h2>
+                <div class="form-group">
+                    <label>Diet Type</label>
+                    <select id="diet_type">
+                        <option value="omnivore">Omnivore (everything)</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="pescatarian">Pescatarian</option>
+                        <option value="keto">Keto</option>
+                        <option value="paleo">Paleo</option>
+                        <option value="mediterranean">Mediterranean</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cuisine Preferences</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="cuisines" value="american"> American
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="cuisines" value="italian"> Italian
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="cuisines" value="mexican"> Mexican
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="cuisines" value="indian"> Indian
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="cuisines" value="chinese"> Chinese
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="cuisines" value="japanese"> Japanese
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="cuisines" value="mediterranean"> Mediterranean
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Meals Per Day</label>
+                        <input type="number" id="meals_per_day" min="2" max="6" value="3">
+                    </div>
+                    <div class="form-group">
+                        <label>Max Cooking Time Per Meal (minutes)</label>
+                        <input type="number" id="cooking_time_max" min="10" max="180" value="30" placeholder="e.g., 30">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Weekly Budget ($)</label>
+                    <input type="number" id="budget_weekly" min="20" max="500" step="5">
+                </div>
+            </div>
+            
+            <button type="submit">🚀 Generate My Meal Plan</button>
+        </form>
+        
+        <div id="result"></div>
+    </div>
+    
+    <script>
+        document.getElementById('userForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const resultDiv = document.getElementById('result');
+            const submitButton = document.querySelector('button[type="submit"]');
+            
+            // Disable button and show loading
+            submitButton.disabled = true;
+            submitButton.textContent = '⏳ Generating Meal Plan...';
+            
+            resultDiv.style.display = 'none';
+            
+            // Collect form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value || null,
+                age: parseInt(document.getElementById('age').value),
+                sex: document.getElementById('sex').value,
+                height: parseFloat(document.getElementById('height').value),
+                weight: parseFloat(document.getElementById('weight').value),
+                country: document.getElementById('country').value || null,
+                ethnicity: document.getElementById('ethnicity').value || null,
+                activity_level: document.getElementById('activity_level').value,
+                goal_type: document.getElementById('goal_type').value,
+                target_weight: parseFloat(document.getElementById('target_weight').value) || null,
+                target_timeline_weeks: parseInt(document.getElementById('target_timeline_weeks').value) || null,
+                diet_type: document.getElementById('diet_type').value,
+                meals_per_day: parseInt(document.getElementById('meals_per_day').value),
+                cooking_time_max: parseInt(document.getElementById('cooking_time_max').value),
+                budget_weekly: parseFloat(document.getElementById('budget_weekly').value) || null,
+                allergies: Array.from(document.querySelectorAll('input[name="allergies"]:checked')).map(cb => cb.value),
+                medical_conditions: Array.from(document.querySelectorAll('input[name="medical"]:checked')).map(cb => cb.value),
+                cuisine_preferences: Array.from(document.querySelectorAll('input[name="cuisines"]:checked')).map(cb => cb.value)
+            };
+            
+            console.log('Submitting:', formData);
+            
+            try {
+                // Call API to create user and generate meal plan
+                const response = await fetch('http://localhost:5000/api/create-user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    // Success - redirect to meal plan page
+                    localStorage.setItem('currentUserId', data.user_id);
+                    localStorage.setItem('currentPlanId', data.plan_id);
+                    localStorage.setItem('mealPlanData', JSON.stringify(data));
+                    
+                    resultDiv.className = 'success';
+                    resultDiv.style.display = 'block';
+                    resultDiv.innerHTML = `
+                        <h3>✅ Meal Plan Created Successfully!</h3>
+                        <p><strong>User ID:</strong> ${data.user_id}</p>
+                        <p><strong>Plan ID:</strong> ${data.plan_id}</p>
+                        <p><strong>Total Meals:</strong> ${data.meal_plan.meals.length}</p>
+                        <p><strong>Daily Calories:</strong> ${data.macros.daily_calories} kcal</p>
+                        <p><strong>Protein:</strong> ${data.macros.protein_g}g | <strong>Carbs:</strong> ${data.macros.carbs_g}g | <strong>Fats:</strong> ${data.macros.fats_g}g</p>
+                        <br>
+                        <button onclick="window.location.href='meal_plan.html'" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); margin-top: 10px;">
+                            📋 View Your Meal Plan
+                        </button>
+                    `;
+                } else if (data.error_type === 'claude_api_error') {
+                    // Claude API error
+                    resultDiv.className = 'error';
+                    resultDiv.style.display = 'block';
+                    resultDiv.innerHTML = `
+                        <h3>❌ Claude API Error</h3>
+                        <p>${data.message}</p>
+                        <p>Please check your <code>ANTHROPIC_API_KEY</code> in the <code>.env</code> file.</p>
+                    `;
+                } else {
+                    // Other error
+                    resultDiv.className = 'error';
+                    resultDiv.style.display = 'block';
+                    resultDiv.innerHTML = `
+                        <h3>❌ Error</h3>
+                        <p>${data.message}</p>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.className = 'error';
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `
+                    <h3>❌ Connection Error</h3>
+                    <p>Could not connect to the API server.</p>
+                    <p>Make sure the server is running: <code>python api_server.py</code></p>
+                `;
+            } finally {
+                // Re-enable button
+                submitButton.disabled = false;
+                submitButton.textContent = '🚀 Generate My Meal Plan';
+            }
+        });
+    </script>
+</body>
+</html>
