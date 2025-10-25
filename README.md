@@ -1,2 +1,2 @@
 # readme
-Extract insights from ad creatives using AI agents
+Your one stop personal diet partner.
