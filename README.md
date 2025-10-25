@@ -1,2 +1,2 @@
 # readme
-Your one stop personal diet partner.
+Your one-stop personal diet partner.
