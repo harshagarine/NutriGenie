@@ -489,6 +489,68 @@ class SQLiteDB:
         self.conn.commit()
         return mod_id
     
+    def clear_all_data(self):
+        """Clear all data from all tables (useful for testing)."""
+        cursor = self.conn.cursor()
+
+        # Disable foreign key constraints temporarily
+        cursor.execute("PRAGMA foreign_keys = OFF")
+
+        # Delete data from all tables in correct order (children first)
+        tables = [
+            'daily_macros',
+            'meal_modifications',
+            'actual_meals',
+            'planned_meals',
+            'meal_plans',
+            'user_preferences',
+            'user_restrictions',
+            'user_goals',
+            'users'
+        ]
+
+        for table in tables:
+            cursor.execute(f"DELETE FROM {table}")
+
+        # Re-enable foreign key constraints
+        cursor.execute("PRAGMA foreign_keys = ON")
+
+        self.conn.commit()
+        print("✅ All database data cleared")
+
+    def clear_user_data(self, user_id: str):
+        """Clear all data for a specific user."""
+        cursor = self.conn.cursor()
+
+        # Delete in correct order (children first)
+        cursor.execute("DELETE FROM daily_macros WHERE user_id = ?", (user_id,))
+        cursor.execute("DELETE FROM meal_modifications WHERE user_id = ?", (user_id,))
+        cursor.execute("DELETE FROM actual_meals WHERE user_id = ?", (user_id,))
+        cursor.execute("DELETE FROM planned_meals WHERE user_id = ?", (user_id,))
+        cursor.execute("DELETE FROM meal_plans WHERE user_id = ?", (user_id,))
+        cursor.execute("DELETE FROM user_preferences WHERE user_id = ?", (user_id,))
+        cursor.execute("DELETE FROM user_restrictions WHERE user_id = ?", (user_id,))
+        cursor.execute("DELETE FROM user_goals WHERE user_id = ?", (user_id,))
+        cursor.execute("DELETE FROM users WHERE user_id = ?", (user_id,))
+
+        self.conn.commit()
+        print(f"✅ Cleared all data for user: {user_id}")
+
+    def delete_user_by_email(self, email: str):
+        """Delete user by email (useful for test cleanup)."""
+        cursor = self.conn.cursor()
+
+        # Find user_id by email
+        cursor.execute("SELECT user_id FROM users WHERE email = ?", (email,))
+        row = cursor.fetchone()
+
+        if row:
+            user_id = dict(row)['user_id']
+            self.clear_user_data(user_id)
+            print(f"✅ Deleted user with email: {email}")
+        else:
+            print(f"ℹ️  No user found with email: {email}")
+
     def close(self):
         """Close database connection."""
         self.conn.close()

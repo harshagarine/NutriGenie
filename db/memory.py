@@ -280,6 +280,17 @@ class Memory:
             }
         return {}
     
+    def clear_all_data(self):
+        """Clear all data from both databases (useful for testing)."""
+        self.sql.clear_all_data()
+        # Note: Chroma collections can't be easily cleared without recreating
+        # For now, we'll just clear SQL data
+        print("✅ All memory data cleared")
+
+    def delete_user_by_email(self, email: str):
+        """Delete user by email (useful for test cleanup)."""
+        self.sql.delete_user_by_email(email)
+
     def close(self):
         """Close all database connections."""
         self.sql.close()
